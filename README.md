@@ -31,7 +31,48 @@ if (vatResult.isValid) {
 }
 ```
 
-### 2. Get VAT Rate information
+### 2. Validating multiple VAT numbers specify Timeout for HttpClient.
+To validate VAT numbers you can use the `ViesClient` class:
+
+```C#
+var client = new ViesClient(new TimeSpan(0,1,0));
+
+var vatResult = await client.ValidateVatNumberAsync(EUCountryCodes.BE, "someVatNumber");
+
+if (vatResult.isValid) {
+  Console.WriteLine("Valid VAT number:");
+  Console.WriteLine(" - Company = " + vatResult.Name);
+  Console.WriteLine(" - Address = " + vatResult.Address);
+} else {
+  Console.WriteLine("Invalid VAT number.");
+}
+```
+
+### 3. Validating multiple VAT numbers.
+To validate VAT numbers you can use the `ViesClient` class:
+
+```C#
+
+var vatNumbers = new List<string>(){"DE1234567","BE12334567","fr23486234"};
+var client = new ViesClient();
+
+var vatResult = await client.ValidateMultipleVatNumbersAsync(vatNumbers);
+
+foreach(var item in vatResult)
+{
+  if (vatResult.isValid) {
+    Console.WriteLine("Valid VAT number:");
+    Console.WriteLine(" - Company = " + vatResult.Name);
+    Console.WriteLine(" - Address = " + vatResult.Address);
+  } else {
+    Console.WriteLine("Invalid VAT number.");
+  }
+}
+
+```
+
+
+### 3. Get VAT Rate information
 With the VatClient you can retrieve specific VAT rate information for a country. 
 
 ```C#
